@@ -8,20 +8,27 @@ public class PalindromeCheckerApp {
         String input = scanner.nextLine();
         scanner.close();
 
-        if (isPalindrome(input, 0, input.length() - 1)) {
-            System.out.println(input + " is a palindrome.");
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean isPalindrome = checkPalindrome(normalized);
+
+        if (isPalindrome) {
+            System.out.println(input + " is a palindrome (ignoring case and spaces).");
         } else {
-            System.out.println(input + " is not a palindrome.");
+            System.out.println(input + " is not a palindrome (ignoring case and spaces).");
         }
     }
 
-    private static boolean isPalindrome(String str, int start, int end) {
-        if (start >= end) {
-            return true;
+    private static boolean checkPalindrome(String str) {
+        int start = 0;
+        int end = str.length() - 1;
+        while (start < end) {
+            if (str.charAt(start) != str.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-        return isPalindrome(str, start + 1, end - 1);
+        return true;
     }
 }
