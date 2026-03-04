@@ -33,26 +33,40 @@ class DequeStrategy implements PalindromeStrategy {
     }
 }
 
+class RecursiveStrategy implements PalindromeStrategy {
+    public boolean checkPalindrome(String str) {
+        return isPalindrome(str, 0, str.length() - 1);
+    }
+    private boolean isPalindrome(String str, int start, int end) {
+        if (start >= end) return true;
+        if (str.charAt(start) != str.charAt(end)) return false;
+        return isPalindrome(str, start + 1, end - 1);
+    }
+}
+
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter a string to check palindrome: ");
         String input = scanner.nextLine();
-        System.out.print("Choose strategy (stack/deque): ");
-        String choice = scanner.nextLine().toLowerCase();
         scanner.close();
 
-        PalindromeStrategy strategy;
-        if (choice.equals("stack")) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        List<PalindromeStrategy> strategies = Arrays.asList(
+                new StackStrategy(),
+                new DequeStrategy(),
+                new RecursiveStrategy()
+        );
 
-        if (strategy.checkPalindrome(input)) {
-            System.out.println(input + " is a palindrome.");
-        } else {
-            System.out.println(input + " is not a palindrome.");
+        List<String> names = Arrays.asList("StackStrategy", "DequeStrategy", "RecursiveStrategy");
+
+        for (int i = 0; i < strategies.size(); i++) {
+            PalindromeStrategy strategy = strategies.get(i);
+            long startTime = System.nanoTime();
+            boolean result = strategy.checkPalindrome(input);
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
+            System.out.println(names.get(i) + ": " + (result ? "Palindrome" : "Not Palindrome") +
+                    " | Time: " + duration + " ns");
         }
     }
 }
