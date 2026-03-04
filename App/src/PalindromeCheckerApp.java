@@ -27,7 +27,6 @@ public class PalindromeCheckerApp {
                 break;
             }
         }
-
         if (isPalindrome) {
             System.out.println(input + " is a palindrome.");
         } else {
